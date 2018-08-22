@@ -15,6 +15,4 @@ Route::get('/', 'PagesController@index');
 
 Route::get('/about', 'PagesController@about');
 
-Route::get('/gallery', 'UploadsController@index');
-
 Route::resource('uploads', 'UploadsController');

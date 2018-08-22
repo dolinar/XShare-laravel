@@ -3,7 +3,7 @@
         <nav class="my-2 my-md-0 mr-md-3">
           <a class="p-2 text-dark" href="/">Home</a>
           <a class="p-2 text-dark" href="/about">About</a>
-          <a class="p-2 text-dark" href="/gallery">Gallery</a>
+          <a class="p-2 text-dark" href="/uploads">Gallery</a>
         </nav>
         <a class="btn btn-outline-primary btn-space" href="#">Sign in</a>
         <a class="btn btn-primary" href="#">Sign up</a>

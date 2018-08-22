@@ -21,9 +21,8 @@ class UploadsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('uploads.create');
     }
 
     /**
@@ -33,7 +32,18 @@ class UploadsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required'
+        ]);
+        $upload = new Upload;
+        $upload->title = $request->input('title');
+        $upload->description = $request->input('description');
+        $upload->public = ($request->input('public')) ? true : false;
+
+        $upload->save();
+
+        return redirect('/uploads')->with('success', 'Image posted!');
     }
 
     /**
@@ -53,9 +63,9 @@ class UploadsController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        $upload = Upload::find($id);
+        return view('uploads.edit')->with('upload', $upload);
     }
 
     /**
@@ -65,9 +75,18 @@ class UploadsController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required'
+        ]);
+        $upload = Upload::find($id);
+        $upload->title = $request->input('title');
+        $upload->description = $request->input('description');
+        $upload->public = ($request->input('public')) ? true : false;
+
+        $upload->save();
+        return redirect('/uploads')->with('success', 'Image info updated!');
     }
 
     /**
@@ -76,8 +95,9 @@ class UploadsController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        $upload = Upload::find($id);
+        $upload->delete();
+        return redirect('/uploads')->with('success', 'Image deleted!');
     }
 }
