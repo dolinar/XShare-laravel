@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Upload;
+use Illuminate\Support\Facades\Storage;
 
 class UploadsController extends Controller {
     /**
@@ -44,14 +45,28 @@ class UploadsController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'image' => 'image|max:1999|required'
         ]);
+        
+        // handling image upload
+        $fileNameWithExtension = $request->file('image')->getClientOriginalName();
+        // without extension
+        $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+        // just extension
+        $extension = $request->file('image')->getClientOriginalExtension();
+
+        $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+        $path = $request->file('image')->storeAs('public/images', $fileNameToStore);
+
+
         $upload = new Upload;
         $upload->title = $request->input('title');
         $upload->description = $request->input('description');
         // if user is logged in, all fields are stored and accessible like this
         $upload->id_user = auth()->user()->id;
         $upload->public = ($request->input('public')) ? true : false;
+        $upload->image = $fileNameToStore;
 
         $upload->save();
 
@@ -95,12 +110,28 @@ class UploadsController extends Controller {
     public function update(Request $request, $id) {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'image' => 'image|max:1999'
         ]);
         $upload = Upload::find($id);
         $upload->title = $request->input('title');
         $upload->description = $request->input('description');
         $upload->public = ($request->input('public')) ? true : false;
+        
+        if ($request->hasFile('image')) {
+            // handling image upload
+            $fileNameWithExtension = $request->file('image')->getClientOriginalName();
+            // without extension
+            $fileName = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+            // just extension
+            $extension = $request->file('image')->getClientOriginalExtension();
+
+            $fileNameToStore = $fileName . '_' . time() . '.' . $extension;
+            $path = $request->file('image')->storeAs('public/images', $fileNameToStore);
+
+            $upload->image = $fileNameToStore;
+        }
+
 
         $upload->save();
         return redirect('/uploads')->with('success', 'Image info updated!');
@@ -120,6 +151,7 @@ class UploadsController extends Controller {
             return redirect('/uploads')->with('error', 'Unauthorized Page');
         }
         
+        Storage::delete('public/images/' . $upload->image);
         $upload->delete();
         return redirect('/uploads')->with('success', 'Image deleted!');
     }

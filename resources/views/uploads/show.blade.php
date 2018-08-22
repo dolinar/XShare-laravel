@@ -3,8 +3,10 @@
 @section('content')
     <h1>{{$upload->title}}</h1>
     <div class="card" style="padding:3px">
+        <img src="/storage/images/{{$upload->image}}">
+        <br>
         <h3>{{$upload->description}}</h3>
-        <small>Uploaded on: {{$upload->created_at}}</small>
+        <p>Uploaded on: {{$upload->created_at}} by {{$upload->user->name}}</p>
     </div>
     <hr>
 

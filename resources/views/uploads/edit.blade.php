@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>Edit image info</h1>
-    {!! Form::open(['action' => ['UploadsController@update', $upload->id_upload], 'method' => 'POST', 'class' => 'form']) !!}
+    {!! Form::open(['action' => ['UploadsController@update', $upload->id_upload], 'method' => 'POST', 'class' => 'form', 'enctype' => 'multipart/form-data']) !!}
         <?php echo method_field('PUT'); ?>
         <div class="form-group">
             {{Form::label('titleLabel', 'Title:')}}
@@ -12,6 +12,10 @@
         <div class="form-group">
             {{Form::label('descriptionLabel', 'Description:')}}
             {{Form::textarea('description', $upload->description, ['class' => 'form-control', 'placeholder' => 'Small description of your upload'])}}
+        </div>
+
+        <div class="form-group">
+                {{Form::file('image')}}
         </div>
 
         <div class="form-group">
