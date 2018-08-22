@@ -6,7 +6,7 @@
         @foreach ($uploads as $upload)
             <div class="card" style="padding:3px">
             <h3><a href="/uploads/{{$upload->id_upload}}">{{$upload->title}}</a></h3>
-                <small>Uploaded on: {{$upload->created_at}}</small>
+            <small>Uploaded on: {{$upload->created_at}} by {{$upload->user->name}}</small>
             </div>
         @endforeach
     @else

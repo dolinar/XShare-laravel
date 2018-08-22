@@ -7,12 +7,22 @@ use App\Upload;
 
 class UploadsController extends Controller {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $uploads = Upload::all();
+        $uploads = Upload::where('public', true)->get();
         return view('uploads.index')->with('uploads', $uploads);
     }
 
@@ -67,6 +77,11 @@ class UploadsController extends Controller {
      */
     public function edit($id) {
         $upload = Upload::find($id);
+
+        // check for correct user
+        if (auth()->user()->id !== $upload->id_user) {
+            return redirect('/uploads')->with('error', 'Unauthorized Page');
+        }
         return view('uploads.edit')->with('upload', $upload);
     }
 
@@ -98,7 +113,13 @@ class UploadsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
+        
         $upload = Upload::find($id);
+
+        if (auth()->user()->id !== $upload->id_user) {
+            return redirect('/uploads')->with('error', 'Unauthorized Page');
+        }
+        
         $upload->delete();
         return redirect('/uploads')->with('success', 'Image deleted!');
     }

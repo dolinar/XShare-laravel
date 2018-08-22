@@ -19,15 +19,19 @@
                     @if(count($uploads) > 0)
                     <table class="table table-striped">
                         <tr>
-                        <th>Title</th>
-                        <th></th>
-                        <th></th>
+                        <td>Title</td>
+                        <td></td>
+                        <td></td>
                         </tr>
                         @foreach ($uploads as $upload)
                             <tr>
-                                <th>{{$upload->title}}</th>
-                                <th><a href="/uploads/{{$upload->id_upload}}/edit" class="btn btn-primary">Edit</a></th>
-                                <th></th>
+                                <td>{{$upload->title}}</td>
+                                <td><a href="/uploads/{{$upload->id_upload}}/edit" class="btn btn-primary">Edit</a></td>
+                                <td>{!!Form::open(['action' => ['UploadsController@destroy', $upload->id_upload], 'method' => 'POST', 'class' => 'float-right'])!!}
+                                        {{Form::hidden('_method', 'DELETE')}}
+                                        {{Form::submit('Delete', ['class' => 'btn btn-danger'])}}
+                                    {!!Form::close() !!}
+                                </td>
                             </tr>
                         @endforeach
                     </table>

@@ -10,6 +10,6 @@ class Upload extends Model {
 
     // relationship, method tells us that a single upload belongs to a user.
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'id_user');
     }
 }
