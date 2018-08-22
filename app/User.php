@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Upload;
 
 class User extends Authenticatable
 {
@@ -26,4 +27,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // this method creates a one to many relationship
+    public function uploads() {
+        return $this->hasMany('App\Upload', 'id_user');
+    }
 }

@@ -16,3 +16,8 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 
 Route::resource('uploads', 'UploadsController');
+
+//automatically added
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index');

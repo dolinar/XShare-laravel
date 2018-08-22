@@ -39,6 +39,8 @@ class UploadsController extends Controller {
         $upload = new Upload;
         $upload->title = $request->input('title');
         $upload->description = $request->input('description');
+        // if user is logged in, all fields are stored and accessible like this
+        $upload->id_user = auth()->user()->id;
         $upload->public = ($request->input('public')) ? true : false;
 
         $upload->save();
